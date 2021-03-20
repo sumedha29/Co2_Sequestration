@@ -1,0 +1,34 @@
+#for stt (LSTM) pressure
+# In[3]:
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from read_data import read
+import os
+import numpy as np
+import glob
+import collections
+
+from keras.layers import Dense
+from keras.layers import LSTM
+from keras import optimizers
+from sklearn.metrics import mean_squared_error
+from read_model import LSTM_single
+from data_to_numpy import numpy_single
+
+
+#read data
+all_pressures,all_saturations,all_permeabilities,all_porosities,all_surf_inj_rate_series,all_surf_prod_rate_series,Ks,Rs = read()
+
+#convert to numpy
+features1_tr,target1_tr,features1_te,target1_te = numpy_single(all_pressures,all_saturations,all_permeabilities,all_porosities,all_surf_inj_rate_series,all_surf_prod_rate_series,Ks,Rs,all_pressures)
+
+
+
+#train model LSTM
+batch_size = 250
+model = LSTM_single()
+
+history = model.fit([features1_tr[:,:,4:7],features1_tr[:,:,3:4],features1_tr[:,:,0:1],features1_tr[:,:,1:2],features1_tr[:,:,2:3]], [target1_tr], epochs=500, batch_size=batch_size,shuffle=True, verbose=1)
+
+model.evaluate([features1_te[:,:,4:7],features1_te[:,:,3:4],features1_te[:,:,0:1],features1_te[:,:,1:2],features1_te[:,:,2:3]],[target1_te])
