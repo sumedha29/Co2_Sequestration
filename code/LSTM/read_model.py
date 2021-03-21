@@ -212,29 +212,6 @@ def LSTM_physics():
     out3 = Dense(1, activation='relu', name='water')(hidden_3)
     print('out3 done ~')
 
-    
-    def gradient_2(params):
-        out1, out2, cur_time, cur_x_input, cur_y_input, cur_z_input, perm_input = params     
-        gradient_with_time = tf.keras.backend.gradients(out1,cur_time)[0]
-        bias = tf.expand_dims(tf.convert_to_tensor([0.,0.,tf.keras.backend.variable(0.)]),0)
-        bias = tf.expand_dims(bias,2)
-        pressure_grad_x = tf.keras.backend.gradients(out2,cur_x_input)[0]
-        pressure_grad_y = tf.keras.backend.gradients(out2,cur_y_input)[0]
-        pressure_grad_z = tf.keras.backend.gradients(out2,cur_z_input)[0]
-
-        pressure_grad = tf.convert_to_tensor([pressure_grad_x,pressure_grad_y,pressure_grad_z])
-        pressure_grad = tf.keras.backend.permute_dimensions(pressure_grad,(1,0,2))
-        coeff = (out1)/tf.keras.backend.variable(1e-8)     
-        m = tf.multiply(perm_input,(pressure_grad - bias))
-        m_grad_x = tf.keras.backend.gradients(m,cur_x_input)[0]
-        m_grad_y = tf.keras.backend.gradients(m,cur_y_input)[0]
-        m_grad_z = tf.keras.backend.gradients(m,cur_z_input)[0]
-
-        m_grad = m_grad_x + m_grad_y + m_grad_z
-        m_final = tf.multiply(coeff, m_grad)
-        eqn = gradient_with_time - m_final
-        return eqn
-
 
 
     grad_out_1 = gradient_1(bias)([out_1, out_2, time, x_input, y_input, z_input, perm_input])
