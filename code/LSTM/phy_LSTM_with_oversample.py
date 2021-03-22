@@ -23,7 +23,7 @@ all_pressures,all_saturations,all_permeabilities,all_porosities,all_surf_inj_rat
 
 
 #data to numpy
-oversampling_rate=50
+oversampling_rate=200
 training = [i for i in range(all_pressures.shape[0]) if i not in[2,3,11]]
 testing = [2,3,11]
 
