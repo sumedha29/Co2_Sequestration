@@ -32,6 +32,6 @@ features1_tr,features2_tr,target1_tr,target2_tr,target3_tr,target31_tr,target_in
 #train model
 batch_size = 250
 model=MLP_physics()
-history = model.fit([features1_tr[:,4:7],features1_tr[:,3:4],features1_tr[:,0:1],features1_tr[:,1:2],features1_tr[:,2:3],features3_tr,features2_tr],[target1_tr,target2_tr,target3_te,target31_tr,target3_tr], epochs=500, batch_size=250,shuffle=True, verbose=1)
+history = model.fit([features1_tr[:,4:7],features1_tr[:,3:4],features1_tr[:,0:1],features1_tr[:,1:2],features1_tr[:,2:3],features3_tr,features2_tr],[target1_tr,target2_tr,target3_tr,target31_tr,target3_tr], epochs=500, batch_size=250,shuffle=True, verbose=1)
 
 print(model.evaluate([features1_te[:,4:7],features1_te[:,3:4],features1_te[:,0:1],features1_te[:,1:2],features1_te[:,2:3],features3_te,features2_te],[target1_te,target2_te,target3_te,target31_te,target_inj_te]))
